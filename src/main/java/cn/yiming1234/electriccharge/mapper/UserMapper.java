@@ -37,4 +37,5 @@ public interface UserMapper {
 
     @Select("select phone from user")
     List<String> getAllPhones();
+
 }

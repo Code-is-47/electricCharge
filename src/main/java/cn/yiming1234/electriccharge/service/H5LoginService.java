@@ -21,11 +21,14 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 public class H5LoginService {
 
-    @Autowired
-    private WeChatProperties weChatProperties;
+    private final WeChatProperties weChatProperties;
+    private final H5LoginProperties h5LoginProperties;
 
     @Autowired
-    private H5LoginProperties h5LoginProperties;
+    public H5LoginService(WeChatProperties weChatProperties, H5LoginProperties h5LoginProperties) {
+        this.weChatProperties = weChatProperties;
+        this.h5LoginProperties = h5LoginProperties;
+    }
 
     /**
      * 获取微信公众号的code
@@ -78,8 +81,10 @@ public class H5LoginService {
 
     /**
      * 获取用户的手机号
+     * 需和模板消息配合使用
      */
     public String getPhone(){
+        // TODO
         return null;
     }
 

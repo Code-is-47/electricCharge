@@ -14,11 +14,14 @@ import java.util.regex.Pattern;
 @Slf4j
 public class MailService {
 
-    @Autowired
-    private MailUtil mailUtil;
+    private final MailUtil mailUtil;
+    private final MailProperties mailProperties;
 
     @Autowired
-    private MailProperties mailProperties;
+    public MailService(MailUtil mailUtil, MailProperties mailProperties) {
+        this.mailUtil = mailUtil;
+        this.mailProperties = mailProperties;
+    }
 
     /**
      * 邮件地址正则表达式

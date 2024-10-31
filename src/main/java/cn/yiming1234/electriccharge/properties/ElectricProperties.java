@@ -13,5 +13,5 @@ public class ElectricProperties {
     private String buildingCode;
     private String floorCode;
     private String roomCode;
-    private String cookie;
+
 }
