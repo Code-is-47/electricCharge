@@ -18,6 +18,12 @@ public class MoneyService {
     @Autowired
     private ElectricProperties electricProperties;
 
+    @Autowired
+    private MailService mailService;
+
+    @Autowired
+    private ElectricService electricService;
+
     /**
      * 获取 token
      */
@@ -37,11 +43,18 @@ public class MoneyService {
                 .setHeader("sec-fetch-dest", "empty")
                 .setHeader("referer", "https://application.xiaofubao.com/")
                 .setHeader("accept-language", "zh-CN,zh;q=0.9")
-                .setHeader("Cookie", electricProperties.getCookie())  // 可替换成动态获取的 Cookie
+                .setHeader("Cookie", electricService.getCookie())
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         log.info("Response from token API: {}", response.body());
+
+        JSONObject jsonResponse = new JSONObject(response.body());
+        if (jsonResponse.getInt("statusCode") == 204) {
+            String user = mailService.getUsers().getFirst();
+            mailService.sendMail(user, Double.parseDouble("请更新Cookie"));
+        }
+
         return response.body();
     }
 
@@ -68,11 +81,18 @@ public class MoneyService {
                 .setHeader("sec-fetch-dest", "empty")
                 .setHeader("referer", "https://application.xiaofubao.com/")
                 .setHeader("accept-language", "zh-CN,zh;q=0.9")
-                .setHeader("Cookie", "shiroJID=5c7159f5-0621-41b1-84fe-d4faf83ad209")  // 动态 Cookie 可在此处替换
+                .setHeader("Cookie", electricService.getCookie())
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         log.info("Response from payment API: {}", response.body());
+
+        JSONObject jsonResponse = new JSONObject(response.body());
+        if (jsonResponse.getInt("statusCode") == 204) {
+            String user = mailService.getUsers().getFirst();
+            mailService.sendMail(user, Double.parseDouble("请更新Cookie"));
+        }
+
         return new JSONObject(response.body()).getString("data");
     }
 }

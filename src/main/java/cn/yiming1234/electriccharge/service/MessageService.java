@@ -28,17 +28,18 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class MessageService {
 
-    @Autowired
-    private SmsProperties smsProperties;
+    private final SmsProperties smsProperties;
+    private final UserMapper userMapper;
+    private final RedisTemplate<String, String> redisTemplate;
+    private final PayService payService;
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
-
-    @Autowired
-    private PayService payService;
+    public MessageService(SmsProperties smsProperties, UserMapper userMapper, RedisTemplate<String, String> redisTemplate, PayService payService) {
+        this.smsProperties = smsProperties;
+        this.userMapper = userMapper;
+        this.redisTemplate = redisTemplate;
+        this.payService = payService;
+    }
 
     /**
      * 获取所有订阅的手机号

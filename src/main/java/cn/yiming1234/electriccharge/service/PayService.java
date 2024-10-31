@@ -15,11 +15,14 @@ import java.util.*;
 @Slf4j
 public class PayService {
 
-    @Autowired
-    private PayProperties payProperties;
+    private final PayProperties payProperties;
+    private final H5LoginProperties h5LoginProperties;
 
     @Autowired
-    private H5LoginProperties h5LoginProperties;
+    public PayService(PayProperties payProperties, H5LoginProperties h5LoginProperties) {
+        this.payProperties = payProperties;
+        this.h5LoginProperties = h5LoginProperties;
+    }
 
     /**
      * 获取精确到秒的时间戳

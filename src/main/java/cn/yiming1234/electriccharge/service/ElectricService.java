@@ -1,8 +1,10 @@
 package cn.yiming1234.electriccharge.service;
 
+import cn.yiming1234.electriccharge.mapper.CookieMapper;
 import cn.yiming1234.electriccharge.mapper.UserMapper;
 import cn.yiming1234.electriccharge.properties.ElectricProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +19,18 @@ import java.util.Map;
 @Slf4j
 public class ElectricService {
 
-    @Autowired
-    private ElectricProperties electricProperties;
+    private final ElectricProperties electricProperties;
+    private final MailService mailService;
+    private final UserMapper userMapper;
+    private final CookieMapper cookieMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    public ElectricService(ElectricProperties electricProperties, MailService mailService, UserMapper userMapper, CookieMapper cookieMapper) {
+        this.electricProperties = electricProperties;
+        this.mailService = mailService;
+        this.userMapper = userMapper;
+        this.cookieMapper = cookieMapper;
+    }
 
     /**
      * 通过手机号储存电费
@@ -40,7 +49,15 @@ public class ElectricService {
     }
 
     /**
+     * 从数据库中获取cookie
+     */
+    public String getCookie() {
+        return cookieMapper.getCookie();
+    }
+
+    /**
      * 第三方接口获取电费余额(自用)
+     * 配合模板消息使用
      */
     public String getElectricCharge() throws Exception {
         try (HttpClient client = HttpClient.newHttpClient()) {
@@ -64,10 +81,18 @@ public class ElectricService {
                     .setHeader("sec-fetch-dest", "empty")
                     .setHeader("referer", "https://application.xiaofubao.com/")
                     .setHeader("accept-language", "zh-CN,zh;q=0.9")
-                    .setHeader("Cookie", electricProperties.getCookie())
+                    .setHeader("Cookie", getCookie())
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            log.info("Response from electric API: {}", response.body());
+
+            JSONObject jsonResponse = new JSONObject(response.body());
+            if (jsonResponse.getInt("statusCode") == 204) {
+                String user = mailService.getUsers().getFirst();
+                mailService.sendMail(user, Double.parseDouble("请更新Cookie"));
+            }
+
             return response.body();
         }
     }
@@ -149,10 +174,18 @@ public class ElectricService {
                     .setHeader("sec-fetch-dest", "empty")
                     .setHeader("referer", "https://application.xiaofubao.com/")
                     .setHeader("accept-language", "zh-CN,zh;q=0.9")
-                    .setHeader("Cookie", electricProperties.getCookie())
+                    .setHeader("Cookie", getCookie())
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            log.info("Response from electric API: {}", response.body());
+
+            JSONObject jsonResponse = new JSONObject(response.body());
+            if (jsonResponse.getInt("statusCode") == 204) {
+                String user = mailService.getUsers().getFirst();
+                mailService.sendMail(user, Double.parseDouble("请更新Cookie"));
+            }
+
             return response.body();
         }
     }

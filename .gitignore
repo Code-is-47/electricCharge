@@ -32,5 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 
+/target/classes/application-dev.yml
+/target/classes/application-prod.yml
 /src/main/resources/application-dev.yml
 /src/main/resources/application-prod.yml
