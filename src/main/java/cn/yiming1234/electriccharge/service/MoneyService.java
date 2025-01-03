@@ -1,9 +1,7 @@
 package cn.yiming1234.electriccharge.service;
 
-import cn.yiming1234.electriccharge.properties.ElectricProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
@@ -15,14 +13,12 @@ import java.net.http.HttpResponse;
 @Slf4j
 public class MoneyService {
 
-    @Autowired
-    private ElectricProperties electricProperties;
-
-    @Autowired
-    private MailService mailService;
-
-    @Autowired
-    private ElectricService electricService;
+    private final MailService mailService;
+    private final ElectricService electricService;
+    public MoneyService (MailService mailService, ElectricService electricService){
+        this.mailService = mailService;
+        this.electricService = electricService;
+    }
 
     /**
      * 获取 token

@@ -17,26 +17,14 @@ spring:
     configuration:
       map-underscore-to-camel-case: true
 
-  data:
-    redis:
-      host: ${spring.data.redis.host}
-      port: ${spring.data.redis.port}
-
   web:
     resources:
       static-locations: classpath:/static/
 
 yiming1234:
-  server:
-    host: ${yiming1234.server.host}
-
   wechat:
     appid: ${yiming1234.wechat.appid}
     secret: ${yiming1234.wechat.secret}
-
-  aliyun:
-    accessKeyId: ${yiming1234.aliyun.accessKeyId}
-    accessKeySecret: ${yiming1234.aliyun.accessKeySecret}
 
   electric:
     cookie: ${yiming1234.electric.cookie}

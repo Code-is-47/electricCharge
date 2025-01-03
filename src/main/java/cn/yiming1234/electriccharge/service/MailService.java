@@ -55,6 +55,6 @@ public class MailService {
      * 获取用户(自用)
      */
     public List<String> getUsers() {
-        return Arrays.asList("scyyw24@nottingham.edu.cn");
+        return List.of("scyyw24@nottingham.edu.cn");
     }
 }

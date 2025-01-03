@@ -23,3 +23,21 @@ bindType：1
 platform：WECHAT_H5
 
 ymId：非必须
+
+接口三： https://application.xiaofubao.com/app/electric/recharge
+
+目的：用于获取订单号
+
+以19-401为例
+
+请求参数：
+
+areaId：2307499265384382465
+
+buildingCode：009
+
+floorCode：009002
+
+roomCode：19-401
+
+money，submitToken，platform，extJson，ymlId
