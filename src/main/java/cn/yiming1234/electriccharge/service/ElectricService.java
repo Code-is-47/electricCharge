@@ -5,7 +5,6 @@ import cn.yiming1234.electriccharge.mapper.UserMapper;
 import cn.yiming1234.electriccharge.properties.ElectricProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
@@ -24,20 +23,11 @@ public class ElectricService {
     private final UserMapper userMapper;
     private final CookieMapper cookieMapper;
 
-    @Autowired
     public ElectricService(ElectricProperties electricProperties, MailService mailService, UserMapper userMapper, CookieMapper cookieMapper) {
         this.electricProperties = electricProperties;
         this.mailService = mailService;
         this.userMapper = userMapper;
         this.cookieMapper = cookieMapper;
-    }
-
-    /**
-     * 通过手机号储存电费
-     */
-    public void saveChargeByPhone(String phone, String balance) {
-        log.info("phone:{}, balance:{}", phone, balance);
-        userMapper.updateChargeByPhone(phone, balance);
     }
 
     /**
@@ -57,7 +47,6 @@ public class ElectricService {
 
     /**
      * 第三方接口获取电费余额(自用)
-     * 配合模板消息使用
      */
     public String getElectricCharge() throws Exception {
         try (HttpClient client = HttpClient.newHttpClient()) {
@@ -125,26 +114,17 @@ public class ElectricService {
 
         // 获取房间号
         int roomNumber = Integer.parseInt(split[1]);
-        int floorNumber = roomNumber / 100; // 提取楼层号
+        int floorNumber = roomNumber / 100;
 
-        String floorCode = "";
-        switch (split[0]) {
-            case "15":
-                floorCode = String.format("%s%03d", buildingCode, floorNumber);
-                break;
-            case "19":
-                floorCode = String.format("%s%03d", buildingCode, floorNumber - 2);
-                break;
-            case "23":
-                floorCode = String.format("%s%03d", buildingCode, floorNumber - 1);
-                break;
-            default:
-                throw new IllegalArgumentException("Unsupported building number: " + split[0]);
-        }
+        String floorCode = switch (split[0]) {
+            case "15" -> String.format("%s%03d", buildingCode, floorNumber);
+            case "19" -> String.format("%s%03d", buildingCode, floorNumber - 2);
+            case "23" -> String.format("%s%03d", buildingCode, floorNumber - 1);
+            default -> throw new IllegalArgumentException("Unsupported building number: " + split[0]);
+        };
 
-        String roomCode = content;
-        log.info("buildingCode:{}, floorCode:{}, roomCode:{}", buildingCode, floorCode, roomCode);
-        return String.format("buildingCode=%s&floorCode=%s&roomCode=%s", buildingCode, floorCode, roomCode);
+        log.info("buildingCode:{}, floorCode:{}, roomCode:{}", buildingCode, floorCode, content);
+        return String.format("buildingCode=%s&floorCode=%s&roomCode=%s", buildingCode, floorCode, content);
     }
 
 
@@ -153,9 +133,7 @@ public class ElectricService {
      */
     public String getCharge(String content) throws Exception {
         try (HttpClient client = HttpClient.newHttpClient()) {
-            // 获取房间号对应的代码
             String codeParams = getCode(content);
-
             String requestBody = String.format(
                     "areaId=%s&platform=WECHAT_H5&%s",
                     electricProperties.getAreaId(),
