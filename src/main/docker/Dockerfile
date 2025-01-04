@@ -5,7 +5,7 @@ FROM openjdk:21-jdk-slim
 WORKDIR /app
 
 # 复制 jar 文件到容器中
-COPY target/electricCharge-0.0.1-SNAPSHOT.jar app.jar
+COPY target/electricCharge-0.0.1.jar app.jar
 
 # 暴露应用运行的端口
 EXPOSE 8080
