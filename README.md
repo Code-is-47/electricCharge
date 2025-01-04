@@ -26,11 +26,13 @@
 
 ## 部署方法
 
+首先克隆仓库
+
 ```shell
 git clone https://github.com/CompPsyUnion/electricCharge
 ```
 
-需要自行填充的![环境变量](https://github.com/CompPsyUnion/electricCharge/tree/main/src/main/docker/.env.template)
+然后补充需要自行填充的[环境变量](https://github.com/CompPsyUnion/electricCharge/tree/main/src/main/docker/.env.template)
 
 运行下面的命令直接运行
 
@@ -38,6 +40,4 @@ git clone https://github.com/CompPsyUnion/electricCharge
 docker-compose -f src/main/docker/docker-compose.yml up -d
 ```
 
-或者填充![application-template.yml](https://github.com/CompPsyUnion/electricCharge/tree/main/src/main/resources/application-template.yml)在本地运行
-
-```shell
+或者填充[application-template.yml](https://github.com/CompPsyUnion/electricCharge/tree/main/src/main/resources/application-template.yml)在本地运行
