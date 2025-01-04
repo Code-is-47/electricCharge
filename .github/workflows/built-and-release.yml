@@ -48,4 +48,4 @@ jobs:
 
     - name: Push Docker image to GitHub Packages
       run: |
-        docker push ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:latest
+        docker push ghcr.io/comppsyunion/comppsyunion/electriccharge:latest
