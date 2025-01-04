@@ -44,7 +44,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t ghcr.io/comppsyunion/comppsyunion/electriccharge:latest .
+        docker build -f src/main/docker/Dockerfile -t ghcr.io/comppsyunion/comppsyunion/electriccharge:latest .
 
     - name: Push Docker image to GitHub Packages
       run: |
