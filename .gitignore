@@ -32,6 +32,8 @@ build/
 ### VS Code ###
 .vscode/
 
+src/main/docker/.env.development
+src/main/docker/.env.production
 /target/classes/application-dev.yml
 /target/classes/application-prod.yml
 /src/main/resources/application-dev.yml

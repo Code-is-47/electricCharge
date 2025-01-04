@@ -4,35 +4,15 @@
 <mapper namespace="cn.yiming1234.electriccharge.mapper.UserMapper">
 
     <insert id="insert" parameterType="cn.yiming1234.electriccharge.entity.User">
-        insert into user (phone, room,charge,create_time)
-        values (#{phone}, #{room},#{charge} #{createTime}
+        insert into user (room,charge,create_time)
+        values (#{room},#{charge} #{createTime}
     </insert>
-
-    <select id="getByPhone" resultType="cn.yiming1234.electriccharge.entity.User">
-        select * from user
-        <where>
-            <if test="phone != null and phone != ''">
-                and phone like concat('%',#{phone},'%')
-            </if>
-        </where>
-        order by create_time desc
-    </select>
 
     <select id="getByRoom" resultType="cn.yiming1234.electriccharge.entity.User">
         select * from user
         <where>
             <if test="room != null and room != ''">
                 and room like concat('%',#{room},'%')
-            </if>
-        </where>
-        order by create_time desc
-    </select>
-
-    <select id="getRoomByPhone" resultType="cn.yiming1234.electriccharge.entity.User">
-        select room from user where phone = #{phone}
-        <where>
-            <if test="phone != null and phone != ''">
-                and phone like concat('%',#{phone},'%')
             </if>
         </where>
         order by create_time desc
@@ -53,14 +33,6 @@
             <if test="charge != null">charge = #{charge},</if>
         </set>
         where room = #{room}
-    </update>
-
-    <update id="updateChargeByPhone" parameterType="cn.yiming1234.electriccharge.entity.User">
-        update user
-        <set>
-            <if test="charge != null">charge = #{charge},</if>
-        </set>
-        where phone = #{phone}
     </update>
 
     <update id="updateCreateTime" parameterType="cn.yiming1234.electriccharge.entity.User">

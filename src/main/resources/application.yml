@@ -3,11 +3,11 @@ server:
 
 spring:
   profiles:
-    active: dev, common, prod
+    active: template
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${spring.datasource.host}:${spring.datasource.port}/${spring.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    url: ${spring.datasource.url}
     username: ${spring.datasource.username}
     password: ${spring.datasource.password}
 
@@ -17,24 +17,22 @@ spring:
     configuration:
       map-underscore-to-camel-case: true
 
-  web:
-    resources:
-      static-locations: classpath:/static/
-
 yiming1234:
   wechat:
     appid: ${yiming1234.wechat.appid}
     secret: ${yiming1234.wechat.secret}
 
   electric:
+    area-id: 2307499265384382465
+    building-code: ${yiming1234.electric.building-code}
+    floor-code: ${yiming1234.electric.floor-code}
+    room-code: ${yiming1234.electric.room-code}
     cookie: ${yiming1234.electric.cookie}
 
   mail:
-    host: ${yiming1234.mail.host}
-    port: ${yiming1234.mail.port}
+    host: smtp.qq.com
+    port: 465
+    subject: 寝室电费欠费提醒
     from: ${yiming1234.mail.from}
-    subject: ${yiming1234.mail.subject}
-
-  pay:
-    appid: ${yiming1234.pay.appid}
-    appsecret: ${yiming1234.pay.appsecret}
+    username: ${yiming1234.mail.username}
+    password: ${yiming1234.mail.password}
